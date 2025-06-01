@@ -1,0 +1,38 @@
+class solveNQueen:
+    def __init__(self):
+        self.size = 8
+        self.solutions = []
+        self.backtracking(0,[])
+
+    def backtracking(self,row,state):#recursive function
+        if row == self.size:
+            self.solutions.append(state[:])
+            return
+        for col in range(self.size):
+            if self.is_safe(state, row,col):
+                state.append(col)
+                self.backtracking(row+1,state)
+                state.pop()
+    
+    def is_safe(self,state, row, col):#pruning
+        #state:previous queen, row/col :now queen
+        for r in range(row):
+            c = state[r]
+            if c == col or abs(c - col) == abs(r - row):  #same col or same diagonal
+                return False
+        return True
+    
+    def print_solutions(self):
+        for index, solution in enumerate(self.solutions):
+            print(f"Solution {index + 1}:")
+            for row in range(len(solution)):
+                line = ""
+                for col in range(len(solution)):
+                    line += "Q " if solution[row] == col else ". "
+                print(line)
+            print()
+      
+if __name__ == "__main__":
+    solver = solveNQueen()
+    solver.print_solutions()
+    print(f"Total Solutions: {len(solver.solutions)}")
